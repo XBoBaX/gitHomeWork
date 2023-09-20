@@ -16,4 +16,4 @@ uper.o: uper.c text.h
 	gcc -Wall -Werror -Wextra -fpic -c uper.c 
 
 clean: 
-	rm -rf main *.o *.a *.gch
+	rm -rf main *.o *.a *.gch libconver.so
