@@ -1,0 +1,36 @@
+version: "3"
+services:
+  server_hm:
+    # build image from server/Dockerfile 
+    build: server/
+    # Set up a non-default bridge network
+    networks:
+      - for_hm
+    # forward port 80 from docker 
+    ports:
+      - 80:80
+    # Bind point (current dir) for image 
+    volumes:
+      - ".:/home/root/"
+    working_dir: /home/root/
+    # this container run script in loop. 
+    # This stop signal help to stop container in timeout case
+    stop_signal: SIGINT
+    # Run netcat script server
+    command: ./server/server.sh
+  client:
+    # build image from client/Dockerfile 
+    build: client/
+    networks:
+      - for_hm
+    depends_on:
+      - server_hm
+    volumes:
+      - ".:/home/root/"
+    working_dir: /home/root/
+    # Run netcat script client
+    command: ./client/client.sh
+  
+# Create a non-default bridge network
+networks:
+  for_hm:
